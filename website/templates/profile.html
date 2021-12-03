@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+{% for vehicle in vehicles %}
+<p>{{vehicle.license_number}}</p>
+{% endfor %}
+{% endblock %}

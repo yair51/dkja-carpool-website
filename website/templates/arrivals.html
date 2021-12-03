@@ -3,16 +3,22 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">Name</th>
+        <th scope="col">License Plate Number</th>
+        <th scope="col">First Names</th>
+        <th scope="col">Last Name</th>
         <th scope="col">Time</th>
       </tr>
     </thead>
     <tbody>
+      {% for vehicle in vehicles %}
       <tr>
-        <td>Gritzman</td>
+        <td>{{ vehicle.license_number }}</td>
+        <td>{{ vehicle.children_names }}</td>
+        <td>{{ vehicle.last_name }}</td>
         <td>5:26 PM</td>
       </tr>
-      <tr>
+      {% endfor %}
+      <!-- <tr>
         <td>Robert Cohen</td>
         <td>5:27 PM</td>
       </tr>
@@ -39,7 +45,7 @@
       <tr>
         <td>Green</td>
         <td>5:32 PM</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 {% endblock %}

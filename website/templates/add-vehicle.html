@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST">
+    <div class="mb-3">
+      <label for="license-number" class="form-label">License Plate Number</label>
+      <input type="text" class="form-control" id="license-number" name="license-number" required>
+      <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endblock %}
