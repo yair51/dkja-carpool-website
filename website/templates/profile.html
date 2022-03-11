@@ -22,7 +22,7 @@
                 element: document.getElementById('qr-code'),
                 size: qrSize,
                 //value: document.getElementById('theLink').href
-                value: "{{request.url_root}}scan/{user.id}}"
+                value: "{{request.url_root}}scan/{{user.id}}"
                 //value: "https://dkja-carpool-app.herokuapp.com/scan/{{user.id}}"
             });
         })();
