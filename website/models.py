@@ -10,7 +10,6 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     password = db.Column(db.String(150))
-    is_admin = db.Column(db.Boolean, default=False)
     vehicle = db.relationship('Vehicle', backref='user')
     arrivals = db.relationship('Arrival', backref='user')
     children = db.relationship('Child', backref='user')
