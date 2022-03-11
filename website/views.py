@@ -5,15 +5,27 @@ from flask_admin.contrib.sqla import ModelView
 from website.auth import login
 from .models import User, Vehicle, Arrival, Child
 from . import db, admin
+from sqlalchemy import func
 
 views = Blueprint('views', __name__)
 
 @views.route("/")
 def home():
     # queries all of the arrivals
-    arrivals = db.session.query(Arrival, User).filter(Arrival.user_id == User.id)
+    
+    # subquery = (db.session.query(Arrival, Child, User, func.rank().over(order_by=Arrival.time.desc(),
+    # partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade,
+    # partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.user_id, Arrival.user_id == User.id).subquery()
+    #children = db.session.query(User, Child).filter(User.id == Child.user_id)
+    # this creates the arrival query by showing only 1 arrival per family
+    subquery = (db.session.query(Arrival, Child, User, func.rank().over(order_by=Arrival.time.desc(),
+    partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade.desc(), partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.user_id, Arrival.user_id == User.id).order_by(Arrival.time.desc()).subquery()
+    arrivals = db.session.query(subquery).filter(
+    subquery.c.time_rnk==1)
     for arrival in arrivals:
         print(arrival)
+    # for child in children:
+    #     print(child)
     vehicles = User.query.all()
     return render_template("arrivals.html", title="Arrivals", vehicles=vehicles, user=current_user, arrivals=arrivals)
     #"<p>Hello, World!</p>"
@@ -46,11 +58,16 @@ def add_vehicle():
 @views.route("/profile/", methods=['GET', 'POST'])
 @login_required
 def profile():
+    # queries the user's children and the user, ordered by grade
+    children = db.session.query(User, Child).filter(User.id == current_user.id, User.id == Child.user_id).order_by(Child.grade)
+    for child in children:
+        print(child)
     vehicles = Vehicle.query.filter_by(user_id=current_user.id)
-    return render_template("profile.html", title="Profile", user=current_user, vehicles=vehicles)
+    return render_template("profile.html", title="Profile", user=current_user, vehicles=vehicles, children=children)
 
 @views.route("/scan/<int:user_id>/", methods=['GET', 'POST'])
 @views.route("/scan/<int:user_id>", methods=['GET', 'POST'])
+@login_required
 def scan(user_id):
     # arrivals = Arrival.query.all()
     # if this route is reached, add a new arrival to the table

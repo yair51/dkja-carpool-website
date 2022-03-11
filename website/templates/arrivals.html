@@ -3,21 +3,39 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">License Plate Number</th>
-        <th scope="col">First Names</th>
-        <th scope="col">Last Name</th>
+        <!-- <th scope="col">License Plate Number</th> -->
+        <th scope="col">user id</th>
+        <th scope="col">arrival id</th>
+        <th scope="col">Parent Name</th>
         <th scope="col">Time</th>
+        <th scope="col">Children</th>
       </tr>
     </thead>
     <tbody>
-      {% for arrival in arrivals %}
-      <tr>
-        <td>{{ arrival[1].id}}</td>
-        <td>{{ arrival[1].first_name }}</td>
-        <td>{{ arrival[1].last_name }}</td>
-        <td>{{ arrival[0].time }}</td>
+    {% for arrival in arrivals %}
+
+    {% if arrivals[loop.index-1].user_id != arrivals[loop.index-2].user_id %}
+    <tr>
+      <td>{{ arrival.user_id}}</td>
+        <td>{{ arrival.id}}</td>
+        <td>{{ arrival.first_name}} {{ arrival.last_name}}</td>
+        <!-- <td>{{ arrival[1].first_name }}</td> -->
+        <!-- <td>{{ arrival[1].last_name }}</td> -->
+        <td>{{ arrival.time }}</td>
+    {% endif %}
+    <!-- <p>{{ arrival[1].name }},</p> -->
+    <td>{{ arrival.name }} (user_id: {{arrival.user_id}})</td>
+    <!-- <td>htds</td> -->
+    {% endfor %}
       </tr>
-      {% endfor %}
     </tbody>
   </table>
+  <!-- <script>
+    children = {{ children }};
+    for (int i = 0; i < children.length; i++)
+    {
+      // if child's id matches the parents, show the element
+      if (children[i][1].id == )
+    }
+  </script> -->
 {% endblock %}
