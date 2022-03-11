@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from os import path, getenv
+from flask_admin import Admin
 from flask_migrate import Migrate
 from .config import Config, StagingConfig, DevelopmentConfig
 
@@ -9,6 +10,7 @@ from .config import Config, StagingConfig, DevelopmentConfig
 # app = Flask(__name__)
 db = SQLAlchemy()
 migrate = Migrate()
+admin = Admin()
 DB_NAME = "database.db"
 
 def create_app():
@@ -27,6 +29,7 @@ def create_app():
     # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     migrate.init_app(app, db)
     db.init_app(app)
+    admin.init_app(app)
 
 
     from .views import views

@@ -4,7 +4,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
-    <form method="POST">
+    <form method="POST" id="sign-up-form">
         <div class="mb-3">
           <label for="fname" class="form-label">First Name</label>
           <input type="text" class="form-control" id="fname" aria-describedby="emailHelp" name="fname" required>
@@ -26,6 +26,112 @@
             <label for="password" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" id="password2" name="password2" required>
           </div>
+          <div class="row">
+            <label for="child-name" class="form-label">Child Name</label>
+            <div class="col">
+              <input type="text" name="child-name" class="form-control" placeholder="First name" aria-label="First name">
+            </div>
+            <div class="col">
+              <!-- <label for="child-grade" class="form-label">Child Grade</label> -->
+              <select class="form-select" name="child-grade" aria-label="Default select example">
+                <option selected disabled>Select a grade</option>
+                <option value="1">1st Grade</option>
+                <option value="2">2nd Grade</option>
+                <option value="3">3rd Grade</option>
+                <option value="4">4th Grade</option>
+                <option value="5">5th Grade</option>
+                <option value="6">6th Grade</option>
+                <option value="7">7th Grade</option>
+                <option value="8">8th Grade</option>
+                <option value="9">9th Grade</option>
+                <option value="10">10th Grade</option>
+                <option value="11">11th Grade</option>
+                <option value="12">12th Grade</option>
+              </select>
+              <!-- <input type="text" class="form-control" placeholder="Last name" aria-label="Last name"> -->
+            </div>
+          </div>
+          <br>
+    <!-- <div id="child">
+      <label for="survey_options[]" class="form-label">Password</label>
+      <label for="child[]" class="form-label">Child Name</label>
+      <input type="text" name="child[]" class="form-control" size="50" placeholder="Enter first and last name of child" required>
+      <br>
+    </div> -->
+    <div class="controls">
+      <button href="#" id="add_more_fields" class="btn btn-primary">+ Add Child</button>
+      <button href="#" id="remove_fields" class="btn btn-danger">- Remove Child</button>
+      <!-- <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a> -->
+    </div>
+        <!-- <script>
+          
+          var child = document.getElementById('child');
+          var add_more_fields = document.getElementById('add_more_fields');
+          var remove_fields = document.getElementById('remove_fields');
+
+          add_more_fields.onclick = function(){
+            var br = document.createElement('br');
+            var newChild = document.createElement('input');
+            newChild.setAttribute('type','text');
+            newChild.setAttribute('name','survey_options[]');
+            newChild.setAttribute('class','form-control');
+            newChild.setAttribute('siz',50);
+            newChild.setAttribute('placeholder','Enter first and last name of child');
+            newField.setAttribute('required', 'true');
+            // adds the new input followed by a line break
+            child.appendChild(newChild);
+            child.appendChild(br);
+
+          }
+
+          remove_fields.onclick = function(){
+            var input_tags = survey_options.getElementsByTagName('input');
+            var br_tags = survey_options.getElementsByTagName('br');
+            if(input_tags.length > 1) {
+              survey_options.removeChild(input_tags[(input_tags.length) - 1]);
+              survey_options.removeChild(br_tags[(br_tags.length) - 1]);
+            }
+          }
+        </script> -->
+        <!-- <select class="form-select" aria-label="Default select example">
+          <option selected>Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+        <select name="" id="">
+          <option value="">a</option>
+        </select> -->
+        <script>
+          var child = document.getElementById('child');
+
+          add_more_fields.onclick = function(){
+            // const f = document.createElement("form");
+            // const br = document.createElement("br");
+
+            const i = document.createElement("input");
+            i.setAttribute('type', "text");
+            i.setAttribute('name', "child");
+
+            const s = document.createElement("select");
+            s.setAttribute('type', "submit");
+            s.setAttribute('value', "Submit");
+
+            child.appendChild(i);
+            child.appendChild(s);
+            child.appendChild(br);
+
+            // document.body.appendChild(f);
+          }
+          
+          remove_fields.onclick = function(){
+            input_tags = child.getElementsByTagName('input');
+            if (input_tags.length > 1) {
+              child.removeChild(input_tags[input_tags.length - 1]);
+            }
+          }
+        </script>
+              <br>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     {% endblock %}

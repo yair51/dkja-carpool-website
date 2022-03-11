@@ -1,6 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-{% for vehicle in vehicles %}
-<p>{{vehicle.license_number}}</p>
-{% endfor %}
+<div class="container text-center">
+    <h1 style="text-align: center;">Tamara Gritzman</h1>
+    <p>Children: Yair, Ilan, Talia</p>
+    <canvas id="qr-code"></canvas>
+    <!-- <p>QR Code</p> -->
+    <!-- {% for vehicle in vehicles %}
+    <p>{{vehicle.license_number}}</p>
+    {% endfor %} -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+    var qrSize = 350;
+        (function() {
+                qr = new QRious({
+                element: document.getElementById('qr-code'),
+                size: qrSize,
+                //value: document.getElementById('theLink').href
+                value: "https://dkja-carpool-app.herokuapp.com/scan/{{user.id}}"
+            });
+        })();
+</script>
 {% endblock %}

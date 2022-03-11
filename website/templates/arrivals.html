@@ -10,42 +10,14 @@
       </tr>
     </thead>
     <tbody>
-      {% for vehicle in vehicles %}
+      {% for arrival in arrivals %}
       <tr>
-        <td>{{ vehicle.license_number }}</td>
-        <td>{{ vehicle.children_names }}</td>
-        <td>{{ vehicle.last_name }}</td>
-        <td>5:26 PM</td>
+        <td>{{ arrival[1].id}}</td>
+        <td>{{ arrival[1].first_name }}</td>
+        <td>{{ arrival[1].last_name }}</td>
+        <td>{{ arrival[0].time }}</td>
       </tr>
       {% endfor %}
-      <!-- <tr>
-        <td>Robert Cohen</td>
-        <td>5:27 PM</td>
-      </tr>
-      <tr>
-        <td>Smith</td>
-        <td>5:28 PM</td>
-      </tr>
-      <tr>
-        <td>Liss</td>
-        <td>5:29 PM</td>
-      </tr>
-      <tr>
-        <td>Griff</td>
-        <td>5:29 PM</td>
-      </tr>
-      <tr>
-        <td>Berkower</td>
-        <td>5:30 PM</td>
-      </tr>
-      <tr>
-        <td>Stein</td>
-        <td>5:31 PM</td>
-      </tr>
-      <tr>
-        <td>Green</td>
-        <td>5:32 PM</td>
-      </tr> -->
     </tbody>
   </table>
 {% endblock %}
