@@ -1,41 +1,136 @@
 {% extends "base.html" %}
 {% block content %}
-<table class="table">
+<table id="data" class="table">
     <thead>
       <tr>
         <!-- <th scope="col">License Plate Number</th> -->
         <th scope="col">user id</th>
         <th scope="col">arrival id</th>
-        <th scope="col">Parent Name</th>
+        <th scope="col" >Parent Name</th>
         <th scope="col">Time</th>
-        <th scope="col">Children</th>
+        <th scope="col">Child</th>
+        <th scope="col">Grade</th>
       </tr>
     </thead>
     <tbody>
     {% for arrival in arrivals %}
 
-    {% if arrivals[loop.index-1].user_id != arrivals[loop.index-2].user_id %}
     <tr>
       <td>{{ arrival.user_id}}</td>
         <td>{{ arrival.id}}</td>
         <td>{{ arrival.first_name}} {{ arrival.last_name}}</td>
         <!-- <td>{{ arrival[1].first_name }}</td> -->
         <!-- <td>{{ arrival[1].last_name }}</td> -->
-        <td>{{ arrival.time }}</td>
-    {% endif %}
+        <td id="time{{loop.index0}}" class="time">{{ arrival.time }}</td>
     <!-- <p>{{ arrival[1].name }},</p> -->
     <td>{{ arrival.name }}</td>
+    <td>{{ arrival.grade }}</td>
+    <!-- <script>
+       var time = document.getElementById('time' + {{loop.index0}}).innerHTML;
+        var old_date = new Date(time + ' UTC');
+        document.getElementById('time' + {{loop.index0}}).innerHTML = old_date.toLocaleString();
+    </script> -->
     <!-- <td>htds</td> -->
     {% endfor %}
       </tr>
     </tbody>
   </table>
+{% endblock %}
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('#data').DataTable( {
+      'iDisplayLength': 50,
+      columns: [
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: false},
+          {orderable: false, searchable: true},
+        ],
+        "order": [[ 3, "desc" ]]
+    } );
+} );
+
+var times = document.getElementsByClassName("time");
+for (let i = 0; i < times.length; i++) {
+  old_date = new Date(times[i].innerHTML + ' UTC');
+  times[i].innerHTML = old_date.toLocaleString();
+}
+
+// Convert ISO8601 dates into a simple human readable format
+// $('#data').DataTable( {
+//     columnDefs: [ {
+//       targets: 3,
+//       render: $.fn.dataTable.render.moment( 'MM-DD-YYYY', 'MM-YY')
+//     } ]
+//   } );
+
+  
+
+
+// for (int )
+</script>
   <!-- <script>
-    children = {{ children }};
-    for (int i = 0; i < children.length; i++)
-    {
-      // if child's id matches the parents, show the element
-      if (children[i][1].id == )
-    }
+$(document).ready(function () {
+    // Setup - add a text input to each footer cell
+    $('#data thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#data thead');
+ 
+    var table = $('#data').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            var api = this.api();
+ 
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input type="text" placeholder="' + title + '" />');
+ 
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('keyup change', function (e) {
+                            e.stopPropagation();
+ 
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+ 
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+ 
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
+});
   </script> -->
 {% endblock %}
