@@ -22,8 +22,8 @@ def home():
     partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade.desc(), partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.user_id, Arrival.user_id == User.id).order_by(Arrival.time.desc()).subquery()
     arrivals = db.session.query(subquery).filter(
     subquery.c.time_rnk==1)
-    for arrival in arrivals:
-        print(arrival)
+    # for arrival in arrivals:
+    #     print(arrival)
     # for child in children:
     #     print(child)
     vehicles = User.query.all()
