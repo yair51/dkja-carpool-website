@@ -10,7 +10,6 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     password = db.Column(db.String(150))
-    # children = db.relationship('Child', backref='user')
 
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
