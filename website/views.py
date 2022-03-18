@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_admin.contrib.sqla import ModelView
 from website.auth import login
-from .models import User, Vehicle, Arrival, Child
+from .models import User, Vehicle, Arrival, Child, Parent
 from . import db, admin
 from sqlalchemy import func
 
@@ -15,11 +15,11 @@ def home():
     
     # subquery = (db.session.query(Arrival, Child, User, func.rank().over(order_by=Arrival.time.desc(),
     # partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade,
-    # partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.user_id, Arrival.user_id == User.id).subquery()
-    #children = db.session.query(User, Child).filter(User.id == Child.user_id)
+    # partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.parent_id, Arrival.user_id == User.id).subquery()
+    #children = db.session.query(User, Child).filter(User.id == Child.parent_id)
     # this creates the arrival query by showing only 1 arrival per family
     subquery = (db.session.query(Arrival, Child, User, func.rank().over(order_by=Arrival.time.desc(),
-    partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade.desc(), partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.user_id, Arrival.user_id == User.id).order_by(Arrival.time.desc()).subquery()
+    partition_by=Arrival.user_id).label('time_rnk'), func.rank().over(order_by=Child.grade.desc(), partition_by=Arrival.user_id).label('grade_rnk'))).filter(Arrival.user_id == Child.parent_id, Arrival.user_id == User.id).order_by(Arrival.time.desc()).subquery()
     arrivals = db.session.query(subquery).filter(
     subquery.c.time_rnk==1)
     for arrival in arrivals:
@@ -59,7 +59,7 @@ def add_vehicle():
 @login_required
 def profile():
     # queries the user's children and the user, ordered by grade
-    children = db.session.query(User, Child).filter(User.id == current_user.id, User.id == Child.user_id).order_by(Child.grade)
+    children = db.session.query(User, Child).filter(User.id == current_user.id, User.id == Child.parent_id).order_by(Child.grade)
     for child in children:
         print(child)
     vehicles = Vehicle.query.filter_by(user_id=current_user.id)
@@ -84,3 +84,4 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Vehicle, db.session))
 admin.add_view(ModelView(Arrival, db.session))
 admin.add_view(ModelView(Child, db.session))
+admin.add_view(ModelView(Parent, db.session))

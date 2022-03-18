@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     vehicle = db.relationship('Vehicle', backref='user')
     arrivals = db.relationship('Arrival', backref='user')
-    children = db.relationship('Child', backref='user')
+    # children = db.relationship('Child', backref='user')
 
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,4 +29,12 @@ class Child(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
     grade = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('parent.id'))
+
+class Parent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(150))
+    last_name = db.Column(db.String(150))
+    children = db.relationship('Child', backref='parent')
+
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
