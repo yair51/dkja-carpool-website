@@ -10,20 +10,18 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     password = db.Column(db.String(150))
-    vehicle = db.relationship('Vehicle', backref='user')
-    arrivals = db.relationship('Arrival', backref='user')
     # children = db.relationship('Child', backref='user')
 
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     license_number = db.Column(db.String(20))
     on_campus = db.Column(db.Boolean)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('parent.id'))
 
 class Arrival(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('parent.id'))
 
 class Child(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,5 +34,5 @@ class Parent(db.Model):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     children = db.relationship('Child', backref='parent')
-
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    arrivals = db.relationship('Arrival', backref='parent')
+    vehicles = db.relationship('Vehicle', backref='parent')
