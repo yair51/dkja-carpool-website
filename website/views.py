@@ -1,4 +1,5 @@
 from threading import current_thread
+from tkinter.font import names
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_admin.contrib.sqla import ModelView
@@ -32,6 +33,12 @@ def home():
     vehicles = User.query.all()
     return render_template("arrivals.html", title="Arrivals", vehicles=vehicles, user=current_user, arrivals=arrivals)
     #"<p>Hello, World!</p>"
+
+@views.route("/parents")
+def parents():
+        names = Parent.query.all()
+        return render_template("parents.html", title="Parents",user=current_user, names=names)
+
 
 @views.route("/contact")
 def contact():
