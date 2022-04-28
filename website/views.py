@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from website.auth import login
 from .models import User, Vehicle, Arrival, Child, Parent
 from . import db, admin
-from sqlalchemy import func
+from sqlalchemy import func, join
 
 views = Blueprint('views', __name__)
 
@@ -62,15 +62,19 @@ def add_vehicle():
     return render_template("add-vehicle.html", title="Add Vehicle", user=current_user)
 
 
-@views.route("/profile", methods=['GET', 'POST'])
-@views.route("/profile/", methods=['GET', 'POST'])
+@views.route("/profile/<int:parent_id>/", methods=['GET', 'POST'])
+@views.route("/profile/<int:parent_id>", methods=['GET', 'POST'])
 @login_required
-def profile():
-    # queries the user's children and the user, ordered by grade
-    children = db.session.query(User, Child).filter(User.id == current_user.id, User.id == Child.parent_id).order_by(Child.grade)
+def profile(parent_id):
+    # queries the parent's children and the parent, ordered by grade
+    children = db.session.query(Parent, Child).filter(Parent.id == parent_id, Parent.id == Child.parent_id).order_by(Child.grade)
     for child in children:
         print(child)
     vehicles = Vehicle.query.filter_by(parent_id=current_user.id)
+    # parent = db.session.query(Parent).filter(Parent.id == parent_id)
+    # print(parent.first_name)
+    # for parent in parents:
+    #     print(parent.first_name)
     return render_template("profile.html", title="Profile", user=current_user, vehicles=vehicles, children=children)
 
 @views.route("/scan/<int:parent_id>/", methods=['GET', 'POST'])
