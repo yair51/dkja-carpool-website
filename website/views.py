@@ -77,13 +77,31 @@ def profile(parent_id):
     #     print(parent.first_name)
     return render_template("profile.html", title="Profile", user=current_user, vehicles=vehicles, children=children)
 
+@views.route("/scan", methods=['GET', 'POST'])
+@views.route("/scan/", methods=['GET', 'POST'])
 @views.route("/scan/<int:parent_id>/", methods=['GET', 'POST'])
 @views.route("/scan/<int:parent_id>", methods=['GET', 'POST'])
 @login_required
-def scan(parent_id):
+def scan(parent_id=0):
     # arrivals = Arrival.query.all()
-    # if this route is reached, add a new arrival to the table
+    # if this route is reached and  add a new arrival to the table
     if request:
+        # if parent_id equals zero, check the license number
+        if parent_id == 0:
+            # looks for parameter value for license
+            license_number = request.args.get('license')
+            print(license_number)
+            # if a value exists, search for it in database
+            if license_number:
+                vehicle = Vehicle.query.filter_by(license_number=license_number).first()
+                if not vehicle:
+                    return redirect(url_for("views.home"))
+                else:
+                    print(vehicle)
+                    parent_id = vehicle.parent_id
+            # if no license in URL, return to home screen
+            else:
+                return redirect(url_for("views.home"))
         # let id and time get set by default
         # set parent_id to the value from the route 
         new_arrival = Arrival(parent_id=parent_id)
