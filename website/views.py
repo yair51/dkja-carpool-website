@@ -81,7 +81,6 @@ def profile(parent_id):
 @views.route("/scan/", methods=['GET', 'POST'])
 @views.route("/scan/<int:parent_id>/", methods=['GET', 'POST'])
 @views.route("/scan/<int:parent_id>", methods=['GET', 'POST'])
-@login_required
 def scan(parent_id=0):
     # arrivals = Arrival.query.all()
     # if this route is reached and  add a new arrival to the table
